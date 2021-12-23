@@ -1,6 +1,6 @@
 import * as equipTypes from "./equip-types";
 
-export const addItem = (item: EquipmentItem): EquipAction => ({
+export const addItem = (item: validNewItem): EquipAction => ({
   type: equipTypes.ADD_ITEM,
   payload: {
     item,
@@ -14,9 +14,13 @@ export const removeItem = (itemName: string): EquipAction => ({
   },
 });
 
-export const updateItem = (item: EquipmentItem): EquipAction => ({
+export const updateItem = (
+  itemName: string,
+  updatedQuantity: number
+): EquipAction => ({
   type: equipTypes.UPDATE_ITEM,
   payload: {
-    item,
+    itemName,
+    updatedQuantity,
   },
 });
