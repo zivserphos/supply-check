@@ -6,7 +6,7 @@ declare interface EquipmentItem {
 declare interface EquipAction {
   type: "ADD_ITEM" | "REMOVE_ITEM" | "UPDATE_ITEM";
   payload: {
-    itemId?: number;
+    itemName?: string;
     item?: EquipmentItem;
   };
 }
@@ -16,7 +16,7 @@ declare interface MissingItem {
   missing: string;
 }
 
-declare interface InitialState {
+declare interface State {
   equipmentList: EquipmentItem[];
   missingItems: MissingItem[];
 }

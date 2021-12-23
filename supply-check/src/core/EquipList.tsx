@@ -7,14 +7,20 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material";
+import { useSelector } from "react-redux";
 import fullEquipmentList from "../db/db";
 
-const StyledTableHead = styled(TableHead)(({ theme }) => ({
+const StyledTableHead = styled(TableHead)(() => ({
   fontSize: "600",
   backgroundColor: "red",
 }));
-const rows = [...fullEquipmentList];
+
 const EquipListTable = function () {
+  // const equipList = useSelector((state) => state.equipmentList);
+  const state = useSelector((_state) => _state);
+  console.log(state);
+  const rows = [...fullEquipmentList];
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
