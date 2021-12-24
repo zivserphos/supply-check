@@ -3,6 +3,10 @@ declare interface EquipmentItem {
   fullQuantity: number;
 }
 
+declare interface combineState {
+  equipmentReducer: State;
+}
+
 declare interface State {
   equipmentList: EquipmentItem[];
   missingItems: MissingItem[];

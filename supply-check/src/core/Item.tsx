@@ -15,7 +15,9 @@ const Item = function ({
   itemReport: MissingItem[];
 }) {
   const inputValue = useRef<HTMLInputElement>(null);
-  const { missingItems } = useSelector((state: State) => state);
+  const { missingItems } = useSelector(
+    (state: combineState) => state.equipmentReducer
+  );
   const changeInput = () => {
     const updatedDetails = [...itemReport];
     const value = Number(inputValue.current?.value);

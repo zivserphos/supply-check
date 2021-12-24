@@ -19,9 +19,11 @@ const StyledTableHead = styled(TableHead)(() => ({
 }));
 
 const EquipListTable = function () {
-  const { equipmentList: equipment } = useSelector((state: State) => state);
+  const { equipmentList: equipment } = useSelector(
+    (state: combineState) => state.equipmentReducer
+  );
   const [itemReport, setItemReport] = useState<MissingItem[]>([]);
-  const tableBodyEl = useRef<HTMLTableSectionElement>(null);
+  const tableBodyEl = useRef(null);
   const rows = [...equipment];
   const dispatch = useDispatch();
   const notyf = new Notyf();
