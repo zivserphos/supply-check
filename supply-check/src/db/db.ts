@@ -1,31 +1,31 @@
 const fullEquipmentList: EquipmentItem[] = [
   {
     name: "Stethoscope",
-    fullQuantity: 2,
+    fullQuantity: 41,
   },
   {
     name: "Gloves",
-    fullQuantity: 100,
+    fullQuantity: 77,
   },
   {
     name: "Boots",
-    fullQuantity: 1,
+    fullQuantity: 19,
   },
   {
     name: "Multi-tool",
-    fullQuantity: 1,
+    fullQuantity: 41,
   },
   {
     name: "Cervical-collar",
-    fullQuantity: 4,
+    fullQuantity: 31,
   },
   {
     name: "Medication-bag",
-    fullQuantity: 1,
+    fullQuantity: 16,
   },
   {
     name: "Ventilators",
-    fullQuantity: 2,
+    fullQuantity: 12,
   },
 ];
 

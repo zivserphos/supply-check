@@ -3,33 +3,29 @@ declare interface EquipmentItem {
   fullQuantity: number;
 }
 
+declare interface State {
+  equipmentList: EquipmentItem[];
+  missingItems: MissingItem[];
+}
+
 declare interface EquipAction {
-  type: "ADD_ITEM" | "REMOVE_ITEM" | "UPDATE_ITEM";
+  type: "ADD_ITEM" | "REMOVE_ITEM" | "UPDATE_ITEM" | "SEND_REPORT";
   payload: {
     itemName?: string;
-    item?: validNewItem;
-    updatedQuantity?: number;
+    item?: EquipmentItem;
+    currentAmount?: number;
+    missing?: MissingItem;
+    missingItems?: MissingItem[];
   };
 }
 
 declare interface MissingItem {
-  id: number;
-  missing: string;
+  name: string;
+  missingQuantity: number;
 }
 
 declare interface validNewItem {
   itemName: string;
   fullQuantity: number;
   currentQuantity: number;
-}
-
-declare interface formInput {
-  itemName: string;
-  fullQuantity: string;
-  currentQuantitu: string;
-}
-
-declare interface State {
-  equipmentList: EquipmentItem[];
-  missingItems: MissingItem[];
 }

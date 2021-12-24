@@ -2,7 +2,7 @@
 /* eslint-disable no-throw-literal */
 import React, { useRef } from "react";
 import Button from "react-bootstrap/Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Notyf } from "notyf";
 import { addItem } from "../state/equpListReducer/equip-actions";
 
@@ -14,7 +14,6 @@ const Form = function () {
   const currentQuantityEl = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
-  // const state = useSelector((_state) => _state);
 
   const formInputValues = (): string[] => {
     const itemName = itemNameEl.current?.value;
@@ -27,7 +26,7 @@ const Form = function () {
     itemName: string,
     fullQuantity: string,
     currentQuantity: string
-  ): validNewItem => {
+  ): { item: EquipmentItem; missing: MissingItem } => {
     if (!itemName) {
       throw "item name is missing";
     }
@@ -43,9 +42,11 @@ const Form = function () {
       throw "please provide a valid number";
     }
     return {
-      itemName,
-      fullQuantity: Number(fullQuantity),
-      currentQuantity: Number(currentQuantity),
+      item: { name: itemName, fullQuantity: Number(fullQuantity) },
+      missing: {
+        name: itemName,
+        missingQuantity: Number(fullQuantity) - Number(currentQuantity),
+      },
     };
   };
 
@@ -53,8 +54,12 @@ const Form = function () {
   const addNewItem = () => {
     try {
       const [itemName, fullQuantity, currentQuantity] = formInputValues();
-      const obj = validInputs(itemName, fullQuantity, currentQuantity);
-      dispatch(addItem(obj));
+      const { item, missing } = validInputs(
+        itemName,
+        fullQuantity,
+        currentQuantity
+      );
+      dispatch(addItem(item, missing));
     } catch (err) {
       notyf.error(err as string);
     }
@@ -62,22 +67,22 @@ const Form = function () {
   return (
     <div>
       <form>
-        <h4>Add Item:</h4>
-        <h5>Item&#39;s Name</h5>
+        <h5>Add Item:</h5>
+        <h6>Item&#39;s Name</h6>
         <input
           ref={itemNameEl}
           className="form-control"
           type="text"
           aria-label="default input example"
         />
-        <h5>Full Quantity</h5>
+        <h6>Full Quantity</h6>
         <input
           ref={fullQuantityEl}
           className="form-control"
           type="text"
           aria-label="default input example"
         />
-        <h5>Current Quantity</h5>
+        <h6>Current Quantity</h6>
         <input
           ref={currentQuantityEl}
           className="form-control"

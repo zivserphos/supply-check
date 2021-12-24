@@ -1,4 +1,5 @@
-import * as React from "react";
+/* eslint-disable array-callback-return */
+import React, { useRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -6,9 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { styled } from "@mui/material";
-import { useSelector } from "react-redux";
-import fullEquipmentList from "../db/db";
+import { Button, styled } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
+import { Notyf, NotyfNotification } from "notyf";
+import Item from "./Item";
+import { sendReport } from "../state/equpListReducer/equip-actions";
 
 const StyledTableHead = styled(TableHead)(() => ({
   fontSize: "600",
@@ -16,44 +19,71 @@ const StyledTableHead = styled(TableHead)(() => ({
 }));
 
 const EquipListTable = function () {
-  // const equipList = useSelector((state) => state.equipmentList);
-  const state = useSelector((_state) => _state);
-  console.log(state);
-  const rows = [...fullEquipmentList];
+  const { equipmentList: equipment } = useSelector((state: State) => state);
+  const [itemReport, setItemReport] = useState<MissingItem[]>([]);
+  const tableBodyEl = useRef<HTMLTableSectionElement>(null);
+  const rows = [...equipment];
+  const dispatch = useDispatch();
+  const notyf = new Notyf();
+
+  const sendReportData = (): NotyfNotification => {
+    console.log(itemReport);
+    let isAllValueAdded = true;
+    if (itemReport.length !== equipment.length)
+      return notyf.error("please fill all item's quantity");
+    itemReport.map((item) => {
+      if (!item.missingQuantity && item.missingQuantity !== 0)
+        isAllValueAdded = false;
+    });
+    if (!isAllValueAdded)
+      return notyf.error("current does not match full qunatity");
+    dispatch(sendReport(itemReport));
+    return notyf.success("report has been sent");
+  };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <StyledTableHead>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell align="right">Item&apos;s Name</TableCell>
-            <TableCell align="right">Full Quantity</TableCell>
-            <TableCell align="right">Current Quantity</TableCell>
-            <TableCell align="right">Missing</TableCell>
-          </TableRow>
-        </StyledTableHead>
-        <TableBody>
-          {rows.map((row, i) => (
-            <TableRow
-              key={row.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              style={{ backgroundColor: i % 2 === 0 ? "" : "gainsboro" }}
-            >
-              <TableCell component="th" scope="row">
-                {i + 1}
-              </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.fullQuantity}</TableCell>
-              <TableCell align="right">
-                <input />
-              </TableCell>
-              <TableCell align="right">{row.fullQuantity}</TableCell>
+    <div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <StyledTableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell align="right">Item&apos;s Name</TableCell>
+              <TableCell align="right">Full Quantity</TableCell>
+              <TableCell align="right">Current Quantity</TableCell>
+              <TableCell align="right">Missing</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </StyledTableHead>
+          <TableBody ref={tableBodyEl}>
+            {rows.map((row, i) => (
+              <Item
+                itemDetails={row}
+                index={i}
+                key={row.name}
+                setItemReport={setItemReport}
+                itemReport={itemReport}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <div
+        style={{
+          display: "flex",
+          marginTop: "1rem",
+          justifyContent: "center",
+        }}
+      >
+        <Button
+          color="success"
+          size="small"
+          variant="contained"
+          onClick={() => sendReportData()}
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
   );
 };
 
