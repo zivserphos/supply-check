@@ -2,13 +2,21 @@ import React from "react";
 import { useSelector } from "react-redux";
 import EquipListTable from "./core/EquipList";
 import Form from "./core/Form";
+import WorkerForm from "./core/WorkerForm";
 
 const App = function () {
-  console.log(useSelector((state) => state));
+  const workerState = useSelector((state: CombineState) => state.workerReducer);
+  console.log(workerState);
   return (
     <div className="App">
-      <EquipListTable />
-      <Form />
+      {workerState.worker ? (
+        <>
+          <EquipListTable />
+          <Form />
+        </>
+      ) : (
+        <WorkerForm />
+      )}
     </div>
   );
 };

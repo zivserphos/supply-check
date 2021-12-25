@@ -1,9 +1,15 @@
+/* eslint-disable default-param-last */
 import * as workerTypes from "./user-types";
 
-function workerReducer(state: Worker, action: Action) {
+const INITIAL_STATE: WorkerState = {
+  worker: null,
+  date: null,
+};
+function workerReducer(state: WorkerState = INITIAL_STATE, action: Action) {
+  console.log("worker reducer");
   switch (action.type) {
     case workerTypes.ADD_WORKER:
-      return { ...action.payload.worker };
+      return { worker: action.payload.worker, date: action.payload.date };
     case workerTypes.REMOVE_WORKER:
       return {};
     default:

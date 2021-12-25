@@ -3,11 +3,12 @@ declare interface EquipmentItem {
   fullQuantity: number;
 }
 
-declare interface combineState {
-  equipmentReducer: State;
+declare interface CombineState {
+  equipmentReducer: EquipState;
+  workerReducer: WorkerState;
 }
 
-declare interface State {
+declare interface EquipState {
   equipmentList: EquipmentItem[];
   missingItems: MissingItem[];
 }

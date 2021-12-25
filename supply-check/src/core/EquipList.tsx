@@ -20,7 +20,7 @@ const StyledTableHead = styled(TableHead)(() => ({
 
 const EquipListTable = function () {
   const { equipmentList: equipment } = useSelector(
-    (state: combineState) => state.equipmentReducer
+    (state: CombineState) => state.equipmentReducer
   );
   const [itemReport, setItemReport] = useState<MissingItem[]>([]);
   const tableBodyEl = useRef(null);

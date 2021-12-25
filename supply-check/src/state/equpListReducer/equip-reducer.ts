@@ -2,7 +2,7 @@
 import * as actionTypes from "./equip-types";
 import db from "../../db/db";
 
-const INITIAL_STATE: State = {
+const INITIAL_STATE: EquipState = {
   equipmentList: db,
   missingItems: db.map((item) => ({
     name: item.name,
@@ -12,15 +12,14 @@ const INITIAL_STATE: State = {
 
 const updatedMissingQuantities = (
   report: MissingItem[],
-  state: State
-): State => ({ ...state, missingItems: [...report] });
+  state: EquipState
+): EquipState => ({ ...state, missingItems: [...report] });
 
 const equipmentReducer = (
   // eslint-disable-next-line default-param-last
   state = INITIAL_STATE,
   action: EquipAction
-): State => {
-  console.log("here at update items");
+): EquipState => {
   switch (action.type) {
     case actionTypes.ADD_ITEM:
       const updatedEquipment = [...state.equipmentList];
@@ -38,7 +37,6 @@ const equipmentReducer = (
       if (!action.payload.missingItems) return state;
       return updatedMissingQuantities(action.payload.missingItems, state);
     default:
-      console.log("default");
       return state;
   }
 };

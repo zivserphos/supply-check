@@ -16,7 +16,7 @@ const Item = function ({
 }) {
   const inputValue = useRef<HTMLInputElement>(null);
   const { missingItems } = useSelector(
-    (state: combineState) => state.equipmentReducer
+    (equipstate: CombineState) => equipstate.equipmentReducer
   );
   const changeInput = () => {
     const updatedDetails = [...itemReport];
@@ -40,7 +40,13 @@ const Item = function ({
       <TableCell align="right">{itemDetails.name}</TableCell>
       <TableCell align="right">{itemDetails.fullQuantity}</TableCell>
       <TableCell align="right">
-        <input ref={inputValue} onChange={() => changeInput()} />
+        <input
+          ref={inputValue}
+          onChange={() => changeInput()}
+          type="number"
+          min="0"
+          max={itemDetails.fullQuantity.toString()}
+        />
       </TableCell>
       <TableCell align="right">{missingItems[index].missingQuantity}</TableCell>
     </TableRow>
