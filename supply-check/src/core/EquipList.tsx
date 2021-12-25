@@ -1,6 +1,5 @@
 /* eslint-disable array-callback-return */
 import React, { useRef, useState } from "react";
-import "../styles.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
