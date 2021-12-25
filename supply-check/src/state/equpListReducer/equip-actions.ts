@@ -1,10 +1,9 @@
 import * as equipTypes from "./equip-types";
 
-export const addItem = (item: EquipmentItem, missing: MissingItem) => ({
+export const addItem = (item: EquipmentItem) => ({
   type: equipTypes.ADD_ITEM,
   payload: {
     item,
-    missing,
   },
 });
 
@@ -26,9 +25,9 @@ export const updateItem = (
   },
 });
 
-export const sendReport = (missingItems: MissingItem[]): EquipAction => ({
+export const sendReport = (report: EquipmentItem[]): EquipAction => ({
   type: equipTypes.SEND_REPORT,
   payload: {
-    missingItems,
+    report,
   },
 });

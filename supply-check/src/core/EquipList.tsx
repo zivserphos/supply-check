@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useRef, useState } from "react";
+import "../styles.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -10,6 +11,8 @@ import Paper from "@mui/material/Paper";
 import { Button, styled } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { Notyf, NotyfNotification } from "notyf";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import Item from "./Item";
 import { sendReport } from "../state/equpListReducer/equip-actions";
 
@@ -19,27 +22,22 @@ const StyledTableHead = styled(TableHead)(() => ({
 }));
 
 const EquipListTable = function () {
-  const { equipmentList: equipment } = useSelector(
-    (state: CombineState) => state.equipmentReducer
-  );
-  const [itemReport, setItemReport] = useState<MissingItem[]>([]);
+  const { equipmentList: equipment } = useSelector((state: CombineState) => ({
+    ...state.equipmentReducer,
+  }));
+  const [itemReport, setItemReport] = useState<EquipmentItem[]>([]);
+  const [allUpdated, setAllUpdated] = useState(true);
   const tableBodyEl = useRef(null);
   const rows = [...equipment];
   const dispatch = useDispatch();
   const notyf = new Notyf();
 
   const sendReportData = (): NotyfNotification => {
-    let isAllValueAdded = true;
-    if (itemReport.length !== equipment.length)
+    const report = [...itemReport];
+    if (report.length !== equipment.length)
       return notyf.error("please fill all item's quantity");
-    itemReport.map((item) => {
-      console.log(item.missingQuantity);
-      if (!item.missingQuantity && item.missingQuantity !== 0)
-        isAllValueAdded = false;
-    });
-    if (!isAllValueAdded)
-      return notyf.error("current does not match full qunatity");
-    dispatch(sendReport(itemReport));
+    dispatch(sendReport([...report]));
+    setAllUpdated(true);
     return notyf.success("report has been sent");
   };
 
@@ -64,6 +62,7 @@ const EquipListTable = function () {
                 key={row.name}
                 setItemReport={setItemReport}
                 itemReport={itemReport}
+                setAllUpdated={setAllUpdated}
               />
             ))}
           </TableBody>
@@ -84,6 +83,15 @@ const EquipListTable = function () {
         >
           Submit
         </Button>
+
+        {!allUpdated ? (
+          <div style={{ color: "red", marginLeft: "1rem" }}>
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+            (submit to update)
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

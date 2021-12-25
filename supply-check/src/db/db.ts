@@ -1,4 +1,4 @@
-const fullEquipmentList: EquipmentItem[] = [
+const fullEquipmentList = [
   {
     name: "Stethoscope",
     fullQuantity: 41,

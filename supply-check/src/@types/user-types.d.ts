@@ -3,14 +3,9 @@ declare interface WorkerInfo {
   workPlace: string | null;
   id?: string;
 }
-declare interface Action {
+declare interface WorkerAction {
   type: string;
   payload: { worker: Worker; date: string };
-}
-
-declare interface WorkerContextInterface {
-  state: Worker;
-  dispatch: Dispatch<Action>;
 }
 
 declare interface WorkerState {

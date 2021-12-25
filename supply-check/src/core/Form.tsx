@@ -15,50 +15,42 @@ const Form = function () {
 
   const dispatch = useDispatch();
 
-  const formInputValues = (): string[] => {
-    const itemName = itemNameEl.current?.value;
-    const fullQuantity = fullQuantityEl.current?.value;
-    const currentQuantity = currentQuantityEl.current?.value;
-    return [itemName || "", fullQuantity || "", currentQuantity || ""];
+  const formInputValues = (): {
+    itemName: string;
+    fullQuantity: number;
+    currentQuantity: number;
+  } => {
+    const itemName = itemNameEl.current?.value || "";
+    const fullQuantity = Number(fullQuantityEl.current?.value);
+    const currentQuantity = Number(currentQuantityEl.current?.value);
+    return { itemName, fullQuantity, currentQuantity };
   };
 
   const validInputs = (
     itemName: string,
-    fullQuantity: string,
-    currentQuantity: string
-  ): { item: EquipmentItem; missing: MissingItem } => {
+    fullQuantity: number,
+    currentQuantity: number
+  ): { item: EquipmentItem } => {
     if (!itemName) {
       throw "item name is missing";
     }
-    const num1 = Number(fullQuantity);
-    const num2 = Number(currentQuantity);
-    if (
-      !Number(fullQuantity) ||
-      !Number(currentQuantity) ||
-      num1 <= 0 ||
-      num2 < 0 ||
-      num1 < num2
-    ) {
+    if (!fullQuantity || !currentQuantity || fullQuantity < currentQuantity) {
       throw "please provide a valid number";
     }
     return {
-      item: { name: itemName, fullQuantity: Number(fullQuantity) },
-      missing: {
+      item: {
         name: itemName,
-        missingQuantity: Number(fullQuantity) - Number(currentQuantity),
+        fullQuantity,
+        missingQuantity: fullQuantity - currentQuantity,
       },
     };
   };
 
   const addNewItem = () => {
     try {
-      const [itemName, fullQuantity, currentQuantity] = formInputValues();
-      const { item, missing } = validInputs(
-        itemName,
-        fullQuantity,
-        currentQuantity
-      );
-      dispatch(addItem(item, missing));
+      const { itemName, fullQuantity, currentQuantity } = formInputValues();
+      const { item } = validInputs(itemName, fullQuantity, currentQuantity);
+      dispatch(addItem(item));
     } catch (err) {
       notyf.error(err as string);
     }
@@ -77,15 +69,15 @@ const Form = function () {
         <h6>Full Quantity</h6>
         <input
           ref={fullQuantityEl}
+          type="number"
           className="form-control"
-          type="text"
           aria-label="default input example"
         />
         <h6>Current Quantity</h6>
         <input
           ref={currentQuantityEl}
+          type="number"
           className="form-control"
-          type="text"
           aria-label="default input example"
         />
         <div style={{ display: "flex", justifyContent: "center" }}>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
+import { Notyf } from "notyf";
 import addWorker from "../state/userReducer/user-actions";
 
 const WorkerForm = function () {
@@ -8,15 +9,19 @@ const WorkerForm = function () {
   const [workPlace, setWorkPlace] = useState("");
   const [date, setDate] = useState("");
 
+  const notyf = new Notyf();
+
   const dispatch = useDispatch();
 
   function handleSubmit() {
-    if (name !== "" && workPlace !== "" && date !== null) {
+    if (name !== "" && workPlace !== "" && date !== "") {
       const worker: WorkerInfo = {
         name,
         workPlace,
       };
       dispatch(addWorker(worker, date));
+    } else {
+      notyf.error("please fill all fields");
     }
   }
 

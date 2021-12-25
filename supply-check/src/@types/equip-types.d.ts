@@ -1,6 +1,7 @@
 declare interface EquipmentItem {
   name: string;
   fullQuantity: number;
+  missingQuantity: number;
 }
 
 declare interface CombineState {
@@ -10,7 +11,6 @@ declare interface CombineState {
 
 declare interface EquipState {
   equipmentList: EquipmentItem[];
-  missingItems: MissingItem[];
 }
 
 declare interface EquipAction {
@@ -19,18 +19,6 @@ declare interface EquipAction {
     itemName?: string;
     item?: EquipmentItem;
     currentAmount?: number;
-    missing?: MissingItem;
-    missingItems?: MissingItem[];
+    report?: EquipmentItem[];
   };
-}
-
-declare interface MissingItem {
-  name: string;
-  missingQuantity: number;
-}
-
-declare interface validNewItem {
-  itemName: string;
-  fullQuantity: number;
-  currentQuantity: number;
 }

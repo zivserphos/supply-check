@@ -7,11 +7,7 @@ import {
 } from "./helpers/stateUpdates";
 
 const INITIAL_STATE: EquipState = {
-  equipmentList: db,
-  missingItems: db.map((item) => ({
-    name: item.name,
-    missingQuantity: 0,
-  })),
+  equipmentList: db.map((item) => ({ ...item, missingQuantity: 0 })),
 };
 
 const equipmentReducer = (
@@ -21,16 +17,16 @@ const equipmentReducer = (
 ): EquipState => {
   switch (action.type) {
     case actionTypes.ADD_ITEM:
-      const { item, missing } = action.payload;
-      if (item && missing) return addItemToState(item, missing, state);
+      const { item } = action.payload;
+      if (item) return addItemToState(item, state);
       return state;
     case actionTypes.REMOVE_ITEM:
       return state;
     case actionTypes.UPDATE_ITEM:
       return state;
     case actionTypes.SEND_REPORT:
-      if (!action.payload.missingItems) return state;
-      return updatedMissingQuantities(action.payload.missingItems, state);
+      if (!action.payload.report) return state;
+      return updatedMissingQuantities(action.payload.report, state);
     default:
       return state;
   }
