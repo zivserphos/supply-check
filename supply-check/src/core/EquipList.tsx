@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useRef, useState } from "react";
+import "../styles.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,7 +8,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Tooltip, Button, styled } from "@mui/material";
+import { Button, styled } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { Notyf, NotyfNotification } from "notyf";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,6 +87,7 @@ const EquipListTable = function () {
         {!allUpdated ? (
           <div style={{ color: "red", marginLeft: "1rem" }}>
             <FontAwesomeIcon icon={faExclamationTriangle} />
+            (submit to update)
           </div>
         ) : (
           ""
