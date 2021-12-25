@@ -1,7 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-import { useSelector } from "react-redux";
 
 const Item = function ({
   itemDetails,
@@ -11,22 +10,22 @@ const Item = function ({
 }: {
   itemDetails: EquipmentItem;
   index: number;
-  setItemReport: (value: MissingItem[]) => void;
-  itemReport: MissingItem[];
+  setItemReport: (value: EquipmentItem[]) => void;
+  itemReport: EquipmentItem[];
 }) {
-  const inputValue = useRef<HTMLInputElement>(null);
-  const { missingItems } = useSelector(
-    (equipstate: CombineState) => equipstate.equipmentReducer
+  const [currentVal, setCurrentVal] = useState<number>(
+    itemDetails.missingQuantity
   );
-  const changeInput = () => {
+  const inputValue = useRef<HTMLInputElement>(null);
+
+  const changeInput = (current: number) => {
+    setCurrentVal(current);
     const updatedDetails = [...itemReport];
-    const value = Number(inputValue.current?.value);
-    updatedDetails[index] = { name: itemDetails.name, missingQuantity: NaN };
-    if (value && value >= 0 && value <= itemDetails.fullQuantity) {
-      updatedDetails[index].missingQuantity =
-        itemDetails.fullQuantity - Number(inputValue.current?.value);
-    }
-    setItemReport(updatedDetails);
+    updatedDetails[index] = {
+      ...itemDetails,
+      missingQuantity: itemDetails.fullQuantity - current,
+    };
+    setItemReport([...updatedDetails]);
   };
   return (
     <TableRow
@@ -42,13 +41,15 @@ const Item = function ({
       <TableCell align="right">
         <input
           ref={inputValue}
-          onChange={() => changeInput()}
+          onChange={(e) => changeInput(Number(e.target.value))}
           type="number"
           min="0"
           max={itemDetails.fullQuantity.toString()}
         />
       </TableCell>
-      <TableCell align="right">{missingItems[index].missingQuantity}</TableCell>
+      <TableCell align="right">
+        {itemDetails.fullQuantity - currentVal}
+      </TableCell>
     </TableRow>
   );
 };

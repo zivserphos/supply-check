@@ -19,27 +19,20 @@ const StyledTableHead = styled(TableHead)(() => ({
 }));
 
 const EquipListTable = function () {
-  const { equipmentList: equipment } = useSelector(
-    (state: CombineState) => state.equipmentReducer
-  );
-  const [itemReport, setItemReport] = useState<MissingItem[]>([]);
+  const { equipmentList: equipment } = useSelector((state: CombineState) => ({
+    ...state.equipmentReducer,
+  }));
+  const [itemReport, setItemReport] = useState<EquipmentItem[]>([]);
   const tableBodyEl = useRef(null);
   const rows = [...equipment];
   const dispatch = useDispatch();
   const notyf = new Notyf();
 
   const sendReportData = (): NotyfNotification => {
-    let isAllValueAdded = true;
-    if (itemReport.length !== equipment.length)
+    const report = [...itemReport];
+    if (report.length !== equipment.length)
       return notyf.error("please fill all item's quantity");
-    itemReport.map((item) => {
-      console.log(item.missingQuantity);
-      if (!item.missingQuantity && item.missingQuantity !== 0)
-        isAllValueAdded = false;
-    });
-    if (!isAllValueAdded)
-      return notyf.error("current does not match full qunatity");
-    dispatch(sendReport(itemReport));
+    dispatch(sendReport([...report]));
     return notyf.success("report has been sent");
   };
 

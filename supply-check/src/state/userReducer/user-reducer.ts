@@ -6,8 +6,10 @@ const INITIAL_STATE: WorkerState = {
   date: null,
 };
 
-function workerReducer(state: WorkerState = INITIAL_STATE, action: Action) {
-  console.log("worker reducer");
+function workerReducer(
+  state: WorkerState = INITIAL_STATE,
+  action: WorkerAction
+) {
   switch (action.type) {
     case workerTypes.ADD_WORKER:
       return { worker: action.payload.worker, date: action.payload.date };

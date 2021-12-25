@@ -6,7 +6,6 @@ import WorkerForm from "./core/WorkerForm";
 
 const App = function () {
   const workerState = useSelector((state: CombineState) => state.workerReducer);
-  console.log(workerState);
   return (
     <div className="App">
       {workerState.worker ? (
