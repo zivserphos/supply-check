@@ -29,11 +29,11 @@ const EquipListTable = function () {
   const notyf = new Notyf();
 
   const sendReportData = (): NotyfNotification => {
-    console.log(itemReport);
     let isAllValueAdded = true;
     if (itemReport.length !== equipment.length)
       return notyf.error("please fill all item's quantity");
     itemReport.map((item) => {
+      console.log(item.missingQuantity);
       if (!item.missingQuantity && item.missingQuantity !== 0)
         isAllValueAdded = false;
     });

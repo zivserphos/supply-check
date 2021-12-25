@@ -1,6 +1,10 @@
 /* eslint-disable no-case-declarations */
 import * as actionTypes from "./equip-types";
 import db from "../../db/db";
+import {
+  addItemToState,
+  updatedMissingQuantities,
+} from "./helpers/stateUpdates";
 
 const INITIAL_STATE: EquipState = {
   equipmentList: db,
@@ -10,11 +14,6 @@ const INITIAL_STATE: EquipState = {
   })),
 };
 
-const updatedMissingQuantities = (
-  report: MissingItem[],
-  state: EquipState
-): EquipState => ({ ...state, missingItems: [...report] });
-
 const equipmentReducer = (
   // eslint-disable-next-line default-param-last
   state = INITIAL_STATE,
@@ -22,13 +21,9 @@ const equipmentReducer = (
 ): EquipState => {
   switch (action.type) {
     case actionTypes.ADD_ITEM:
-      const updatedEquipment = [...state.equipmentList];
-      const updatedMissing = [...state.missingItems];
-      if (action.payload.item && action.payload.missing) {
-        updatedEquipment.push(action.payload.item);
-        updatedMissing.push(action.payload.missing);
-      }
-      return { equipmentList: updatedEquipment, missingItems: updatedMissing };
+      const { item, missing } = action.payload;
+      if (item && missing) return addItemToState(item, missing, state);
+      return state;
     case actionTypes.REMOVE_ITEM:
       return state;
     case actionTypes.UPDATE_ITEM:

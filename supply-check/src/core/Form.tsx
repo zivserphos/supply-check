@@ -50,7 +50,6 @@ const Form = function () {
     };
   };
 
-  // eslint-disable-next-line consistent-return
   const addNewItem = () => {
     try {
       const [itemName, fullQuantity, currentQuantity] = formInputValues();

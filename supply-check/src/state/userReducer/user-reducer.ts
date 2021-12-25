@@ -5,6 +5,7 @@ const INITIAL_STATE: WorkerState = {
   worker: null,
   date: null,
 };
+
 function workerReducer(state: WorkerState = INITIAL_STATE, action: Action) {
   console.log("worker reducer");
   switch (action.type) {

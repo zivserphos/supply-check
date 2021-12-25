@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { FormEventHandler, useState } from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import addWorker from "../state/userReducer/user-actions";
@@ -17,7 +16,6 @@ const WorkerForm = function () {
         name,
         workPlace,
       };
-      console.log(worker, date);
       dispatch(addWorker(worker, date));
     }
   }
