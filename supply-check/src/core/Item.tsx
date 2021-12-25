@@ -7,11 +7,13 @@ const Item = function ({
   index,
   setItemReport,
   itemReport,
+  setAllUpdated,
 }: {
   itemDetails: EquipmentItem;
   index: number;
   setItemReport: (value: EquipmentItem[]) => void;
   itemReport: EquipmentItem[];
+  setAllUpdated: (value: boolean) => void;
 }) {
   const [currentVal, setCurrentVal] = useState<number>(
     itemDetails.missingQuantity
@@ -25,6 +27,7 @@ const Item = function ({
       ...itemDetails,
       missingQuantity: itemDetails.fullQuantity - current,
     };
+    setAllUpdated(false);
     setItemReport([...updatedDetails]);
   };
   return (

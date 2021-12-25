@@ -7,9 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button, styled } from "@mui/material";
+import { Tooltip, Button, styled } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { Notyf, NotyfNotification } from "notyf";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
 import Item from "./Item";
 import { sendReport } from "../state/equpListReducer/equip-actions";
 
@@ -23,6 +25,7 @@ const EquipListTable = function () {
     ...state.equipmentReducer,
   }));
   const [itemReport, setItemReport] = useState<EquipmentItem[]>([]);
+  const [allUpdated, setAllUpdated] = useState(true);
   const tableBodyEl = useRef(null);
   const rows = [...equipment];
   const dispatch = useDispatch();
@@ -33,6 +36,7 @@ const EquipListTable = function () {
     if (report.length !== equipment.length)
       return notyf.error("please fill all item's quantity");
     dispatch(sendReport([...report]));
+    setAllUpdated(true);
     return notyf.success("report has been sent");
   };
 
@@ -57,6 +61,7 @@ const EquipListTable = function () {
                 key={row.name}
                 setItemReport={setItemReport}
                 itemReport={itemReport}
+                setAllUpdated={setAllUpdated}
               />
             ))}
           </TableBody>
@@ -77,6 +82,14 @@ const EquipListTable = function () {
         >
           Submit
         </Button>
+
+        {!allUpdated ? (
+          <div style={{ color: "red", marginLeft: "1rem" }}>
+            <FontAwesomeIcon icon={faExclamationTriangle} />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
