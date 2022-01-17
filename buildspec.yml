@@ -7,7 +7,6 @@ phases:
       - npm install
   build:
     commands:
-      - cd supply-check
       - npm run build
 
 artifacts:
