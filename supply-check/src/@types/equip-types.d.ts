@@ -22,3 +22,7 @@ declare interface EquipAction {
     report?: EquipmentItem[];
   };
 }
+
+declare interface SomeInterface {
+  a: number;
+}
